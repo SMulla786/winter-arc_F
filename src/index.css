@@ -4,51 +4,103 @@
 
 @layer base {
   :root {
-    --bg-primary: #0f172a;
-    --bg-secondary: #1e293b;
-    --bg-card: #1e293b;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --accent-emerald: #10b981;
-    --accent-cyan: #06b6d4;
-    --accent-orange: #f97316;
-    --accent-violet: #8b5cf6;
+    --grimoire-bg: #080808;
+    --grimoire-surface: #0d0d0f;
+    --grimoire-card: #121216;
+    --grimoire-card-hover: #18181f;
+    --text-primary: #ffffff;
+    --text-secondary: #a7a7b0;
+    --crimson-primary: #dc2626;
+    --crimson-dark: #b91c1c;
+    --crimson-light: #ef4444;
+    --crimson-glow: rgba(220, 38, 38, 0.25);
+    --gold-accent: #f59e0b;
+    --green-success: #22c55e;
   }
 
   body {
-    background-color: #0f172a;
-    color: #f8fafc;
+    background-color: #080808;
+    color: #ffffff;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    overflow-x: hidden;
   }
 }
 
-.glass-panel {
-  background: rgba(30, 41, 59, 0.7);
-  backdrop-filter: blur(12px);
+/* Dark Grimoire HUD Panels & Energy Borders */
+.grimoire-card {
+  background-color: #121216;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 1rem;
+  border-radius: 0.75rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.glass-panel-hover {
-  transition: all 0.2s ease-in-out;
-}
-.glass-panel-hover:hover {
-  transform: translateY(-2px);
-  border-color: rgba(16, 185, 129, 0.3);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+.grimoire-card-active {
+  background-color: #18181f;
+  border-color: rgba(220, 38, 38, 0.5);
+  box-shadow: 0 0 20px -3px rgba(220, 38, 38, 0.3);
 }
 
-.gradient-text-ai {
-  background: linear-gradient(135deg, #a78bfa 0%, #38bdf8 100%);
+.grimoire-card:hover {
+  border-color: rgba(220, 38, 38, 0.3);
+  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.8), 0 0 12px -2px rgba(220, 38, 38, 0.15);
+}
+
+/* Subtle Crimson Energy Text Gradient */
+.gradient-text-crimson {
+  background: linear-gradient(135deg, #ffffff 0%, #ef4444 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.gradient-text-emerald {
-  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+.gradient-text-gold {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* Energy Line & Scan Animations */
+@keyframes crimson-pulse {
+  0%, 100% { opacity: 0.3; transform: scaleX(0.98); }
+  50% { opacity: 0.8; transform: scaleX(1); }
+}
+
+.animate-crimson-pulse {
+  animation: crimson-pulse 2.5s infinite ease-in-out;
+}
+
+@keyframes scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(1000%); }
+}
+
+.animate-scan-line {
+  animation: scan-line 2s linear infinite;
+}
+
+/* Custom Grimoire Diagonal Subtle Pattern Background */
+.bg-grimoire-pattern {
+  background-image: radial-gradient(rgba(220, 38, 38, 0.08) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080808;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #262626;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #dc2626;
 }
