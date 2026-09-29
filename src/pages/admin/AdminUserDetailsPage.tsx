@@ -11,21 +11,25 @@ export default function AdminUserDetailsPage({
   selectedUser,
   onBack,
 }: AdminUserDetailsPageProps) {
-  const [user, setUser] = useState(
-    selectedUser || {
-      id: 'u1',
-      name: 'Suhel Mulla',
-      email: 'suhel@example.com',
-      plan: 'Pro',
-      status: 'ACTIVE',
-      joined: '15 Aug 2026',
-      scans: 42,
-      aiChats: 118,
-    }
-  );
+  if (!selectedUser) {
+    return (
+      <div className="space-y-6 max-w-4xl mx-auto pb-12">
+        <button
+          onClick={onBack}
+          className="px-3.5 py-2 rounded-xl bg-[#121216] hover:bg-zinc-800 text-zinc-300 text-xs font-bold flex items-center gap-2 border border-zinc-800 transition"
+        >
+          <ArrowLeft className="h-4 w-4" /> Back to Users Directory
+        </button>
+        <div className="p-8 text-center text-zinc-500 text-sm">
+          No user selected. Please select a user from the directory.
+        </div>
+      </div>
+    );
+  }
 
-  const [plan, setPlan] = useState(user.plan);
-  const [status, setStatus] = useState(user.status);
+  const [user, setUser] = useState(selectedUser);
+  const [plan, setPlan] = useState(user.plan || 'Free');
+  const [status, setStatus] = useState(user.status || 'ACTIVE');
 
   const handleSavePlan = (newPlan: string) => {
     setPlan(newPlan);

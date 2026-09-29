@@ -9,12 +9,7 @@ interface AdminUsersPageProps {
 export default function AdminUsersPage({ onSelectUser }: AdminUsersPageProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState<'ALL' | 'FREE' | 'PRO' | 'PREMIUM' | 'ACTIVE'>('ALL');
-  const [users, setUsers] = useState<any[]>([
-    { id: 'u1', name: 'Suhel Mulla', email: 'suhel@example.com', plan: 'Pro', status: 'ACTIVE', joined: '15 Aug 2026', scans: 42, aiChats: 118 },
-    { id: 'u2', name: 'Rahul Sharma', email: 'rahul@example.com', plan: 'Free', status: 'ACTIVE', joined: '18 Aug 2026', scans: 8, aiChats: 22 },
-    { id: 'u3', name: 'Amit Patel', email: 'amit@example.com', plan: 'Pro', status: 'ACTIVE', joined: '20 Aug 2026', scans: 34, aiChats: 89 },
-    { id: 'u4', name: 'Sara Khan', email: 'sara@example.com', plan: 'Premium', status: 'ACTIVE', joined: '01 Sep 2026', scans: 78, aiChats: 210 },
-  ]);
+  const [users, setUsers] = useState<any[]>([]);
 
   useEffect(() => {
     fetchAdminUsersList()

@@ -264,18 +264,7 @@ export default function App() {
         ...prev,
       ]);
     } catch (err) {
-      // Local fallback state update
-      setMealsList((prev) => [
-        {
-          name: newMeal.name,
-          time: 'Just now',
-          calories: newMeal.totalCalories || 0,
-          protein: newMeal.totalProteinG || 0,
-          cost: 0,
-          type: newMeal.mealType || 'LUNCH',
-        },
-        ...prev,
-      ]);
+      console.error('Failed to log meal:', err);
     }
   };
 
@@ -284,7 +273,7 @@ export default function App() {
       await deleteMeal(mealId);
       setMealsList((prev) => prev.filter((m) => m.id !== mealId));
     } catch (err) {
-      setMealsList((prev) => prev.filter((m) => m.id !== mealId));
+      console.error('Failed to delete meal:', err);
     }
   };
 
@@ -303,10 +292,7 @@ export default function App() {
         ...prev,
       ]);
     } catch (err) {
-      setExpensesList((prev) => [
-        { foodName: newExp.foodName, category: newExp.category, amount: newExp.amount, time: 'Just now' },
-        ...prev,
-      ]);
+      console.error('Failed to create expense:', err);
     }
   };
 
@@ -315,7 +301,7 @@ export default function App() {
       await deleteExpense(expenseId);
       setExpensesList((prev) => prev.filter((e) => e.id !== expenseId));
     } catch (err) {
-      setExpensesList((prev) => prev.filter((e) => e.id !== expenseId));
+      console.error('Failed to delete expense:', err);
     }
   };
 
@@ -340,18 +326,13 @@ export default function App() {
         steps: stepsToAdd,
         caloriesBurned: calories,
       });
-      const created = res.data?.activity || res.activity || {
-        id: String(Date.now()),
-        activityType: type,
-        durationMinutes: duration,
-        steps: stepsToAdd,
-        caloriesBurned: calories,
-        loggedAt: new Date().toISOString(),
-      };
-      setActivitiesList((prev) => [created, ...prev]);
+      const created = res.data?.activity || res.activity;
+      if (created) {
+        setActivitiesList((prev) => [created, ...prev]);
+      }
       setStepsLogged((prev) => prev + stepsToAdd);
     } catch (err) {
-      setStepsLogged((prev) => prev + 2500);
+      console.error('Failed to log activity:', err);
     }
   };
 
@@ -360,7 +341,7 @@ export default function App() {
       await deleteActivity(activityId);
       setActivitiesList((prev) => prev.filter((a) => a.id !== activityId));
     } catch (err) {
-      setActivitiesList((prev) => prev.filter((a) => a.id !== activityId));
+      console.error('Failed to delete activity:', err);
     }
   };
 
@@ -374,7 +355,7 @@ export default function App() {
       });
       setStepsLogged((prev) => prev + 1500);
     } catch (err) {
-      setStepsLogged((prev) => prev + 1500);
+      console.error('Failed to log workout session:', err);
     }
   };
 
@@ -383,7 +364,7 @@ export default function App() {
       await logWater(1, 250);
       setWaterGlasses((prev) => Math.min(prev + 1, 12));
     } catch (err) {
-      setWaterGlasses((prev) => Math.min(prev + 1, 12));
+      console.error('Failed to log water:', err);
     }
   };
 
@@ -398,13 +379,7 @@ export default function App() {
       setWeightLogs((prev) => [...prev, newEntry]);
       setUserProfile((prev) => ({ ...prev, weightKg: String(weightKg) }));
     } catch (err) {
-      setWeightLogs((prev) => [
-        ...prev,
-        {
-          date: new Date().toLocaleDateString([], { month: 'short', day: 'numeric' }),
-          weightKg: Number(weightKg),
-        },
-      ]);
+      console.error('Failed to log weight:', err);
     }
   };
 
@@ -418,14 +393,14 @@ export default function App() {
 
     try {
       const res = await chatWithAiCoach(text || 'What should I eat tonight?');
-      const reply = res.data?.reply || res.reply || `Based on your target (${userProfile.dailyBudget} daily budget), consider eggs or dal!`;
+      const reply = res.data?.reply || res.reply || 'AI Coach response received.';
       setChatMessages((prev) => [...prev, { sender: 'ai', text: reply }]);
     } catch (err) {
       setChatMessages((prev) => [
         ...prev,
         {
           sender: 'ai',
-          text: `✦ AI Recommendation: You have remaining calories today. Egg bhurji with 2 rotis (₹90) fits your ₹${userProfile.dailyBudget} budget and adds 22g protein!`,
+          text: 'Unable to connect to AI Coach at this moment. Please check your network or try again later.',
         },
       ]);
     } finally {

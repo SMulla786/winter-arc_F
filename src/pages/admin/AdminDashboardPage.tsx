@@ -122,24 +122,8 @@ export default function AdminDashboardPage({
           <span className="text-zinc-500 font-bold">Live Log</span>
         </h2>
 
-        <div className="space-y-2.5 text-xs">
-          {[
-            { user: 'Rahul Sharma', action: 'Upgraded to Pro Plan (₹299)', time: '5 mins ago', status: 'Payment Verified' },
-            { user: 'Amit Patel', action: 'Scanned Food Photo via Gemini Vision', time: '12 mins ago', status: 'AI Success' },
-            { user: 'Sara Khan', action: 'New Account Registration', time: '28 mins ago', status: 'User Created' },
-            { user: 'Vikram Singh', action: 'Completed Full Body Workout Session (+120 XP)', time: '45 mins ago', status: 'Training Done' },
-          ].map((act, idx) => (
-            <div key={idx} className="p-3 rounded-lg bg-[#080808] border border-zinc-800/80 flex items-center justify-between">
-              <div>
-                <span className="font-extrabold text-white">{act.user}</span>{' '}
-                <span className="text-zinc-400">{act.action}</span>
-              </div>
-              <div className="text-right">
-                <span className="text-[10px] font-bold text-emerald-400 block">{act.status}</span>
-                <span className="text-[10px] text-zinc-500">{act.time}</span>
-              </div>
-            </div>
-          ))}
+        <div className="py-6 text-center text-xs text-zinc-500 font-medium">
+          System events, AI multimodal analysis, and user registrations are logged in the PostgreSQL database.
         </div>
       </div>
     </div>

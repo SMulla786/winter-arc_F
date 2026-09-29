@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FileText, Plus, Edit, Trash2, CheckCircle2 } from 'lucide-react';
+import { fetchExercises } from '../../services/api';
 
 export default function AdminContentPage() {
-  const [exercises, setExercises] = useState([
-    { id: '1', name: 'Bodyweight Squats', difficulty: 'Beginner', muscle: 'Quads & Glutes', sets: 3, reps: '12' },
-    { id: '2', name: 'Standard Push-Ups', difficulty: 'Beginner', muscle: 'Chest & Shoulders', sets: 3, reps: '8' },
-    { id: '3', name: 'Forearm Plank', difficulty: 'Beginner', muscle: 'Core', sets: 3, reps: '30 sec' },
-    { id: '4', name: 'Walking Lunges', difficulty: 'Intermediate', muscle: 'Legs & Hamstrings', sets: 3, reps: '10' },
-  ]);
+  const [exercises, setExercises] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchExercises()
+      .then((res) => {
+        const list = res.data?.exercises || res.exercises;
+        if (list && list.length > 0) {
+          setExercises(list);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const [showAddForm, setShowAddForm] = useState(false);
   const [newEx, setNewEx] = useState({
@@ -118,32 +125,38 @@ export default function AdminContentPage() {
       )}
 
       {/* Exercise Catalog Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {exercises.map((ex) => (
-          <div key={ex.id} className="p-4 rounded-xl bg-[#121216] border border-zinc-800 flex items-center justify-between">
-            <div>
-              <div className="font-extrabold text-xs text-white">{ex.name}</div>
-              <div className="text-[11px] text-zinc-400 mt-0.5">
-                {ex.muscle} • {ex.difficulty} • {ex.sets} × {ex.reps}
+      {exercises.length === 0 ? (
+        <div className="p-8 text-center text-xs text-zinc-500 rounded-xl bg-[#121216] border border-zinc-800">
+          No exercises found in catalog. Click "Add Exercise Item" to create one.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {exercises.map((ex) => (
+            <div key={ex.id} className="p-4 rounded-xl bg-[#121216] border border-zinc-800 flex items-center justify-between">
+              <div>
+                <div className="font-extrabold text-xs text-white">{ex.name}</div>
+                <div className="text-[11px] text-zinc-400 mt-0.5">
+                  {ex.muscle} • {ex.difficulty} • {ex.sets} × {ex.reps}
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => alert(`Editing exercise ${ex.name}`)}
+                  className="p-1.5 rounded bg-zinc-900 hover:bg-zinc-800 text-zinc-300"
+                >
+                  <Edit className="h-3.5 w-3.5" />
+                </button>
+                <button
+                  onClick={() => setExercises(exercises.filter((i) => i.id !== ex.id))}
+                  className="p-1.5 rounded bg-red-950/60 text-red-400 border border-red-600/30"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => alert(`Editing exercise ${ex.name}`)}
-                className="p-1.5 rounded bg-zinc-900 hover:bg-zinc-800 text-zinc-300"
-              >
-                <Edit className="h-3.5 w-3.5" />
-              </button>
-              <button
-                onClick={() => setExercises(exercises.filter((i) => i.id !== ex.id))}
-                className="p-1.5 rounded bg-red-950/60 text-red-400 border border-red-600/30"
-              >
-                <Trash2 className="h-3.5 w-3.5" />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

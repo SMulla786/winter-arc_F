@@ -3,14 +3,7 @@ import { CreditCard, Search, CheckCircle2, XCircle, Clock, RefreshCw } from 'luc
 
 export default function AdminSubscriptionsPage() {
   const [filter, setFilter] = useState<'ALL' | 'SUCCESS' | 'PENDING' | 'FAILED' | 'REFUNDED'>('ALL');
-
-  const payments = [
-    { id: 'pay_901', user: 'Suhel Khan', plan: 'Pro', amount: 299, date: '15 Sep 2026', status: 'SUCCESS' },
-    { id: 'pay_902', user: 'Rahul Sharma', plan: 'Premium', amount: 599, date: '14 Sep 2026', status: 'SUCCESS' },
-    { id: 'pay_903', user: 'Amit Patel', plan: 'Pro', amount: 299, date: '12 Sep 2026', status: 'FAILED' },
-    { id: 'pay_904', user: 'Sara Khan', plan: 'Premium', amount: 599, date: '10 Sep 2026', status: 'SUCCESS' },
-    { id: 'pay_905', user: 'Vikram Singh', plan: 'Pro', amount: 299, date: '08 Sep 2026', status: 'REFUNDED' },
-  ];
+  const [payments, setPayments] = useState<any[]>([]);
 
   const filtered = payments.filter((p) => (filter === 'ALL' ? true : p.status === filter));
 
@@ -61,30 +54,38 @@ export default function AdminSubscriptionsPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-800/60">
-            {filtered.map((p) => (
-              <tr key={p.id} className="hover:bg-zinc-800/50 transition">
-                <td className="py-3 px-2 font-mono text-zinc-400">{p.id}</td>
-                <td className="py-3 px-2 font-extrabold text-white">{p.user}</td>
-                <td className="py-3 px-2 font-bold text-amber-400">{p.plan}</td>
-                <td className="py-3 px-2 font-black text-white">₹{p.amount}</td>
-                <td className="py-3 px-2 text-zinc-400">{p.date}</td>
-                <td className="py-3 px-2 text-right">
-                  <span
-                    className={`px-2 py-0.5 rounded text-[10px] font-extrabold uppercase inline-flex items-center gap-1 ${
-                      p.status === 'SUCCESS'
-                        ? 'bg-emerald-950 text-emerald-400 border border-emerald-500/30'
-                        : p.status === 'FAILED'
-                        ? 'bg-red-950 text-red-400 border border-red-500/30'
-                        : 'bg-zinc-800 text-zinc-400'
-                    }`}
-                  >
-                    {p.status === 'SUCCESS' && <CheckCircle2 className="h-3 w-3 text-emerald-400" />}
-                    {p.status === 'FAILED' && <XCircle className="h-3 w-3 text-red-400" />}
-                    {p.status}
-                  </span>
+            {filtered.length === 0 ? (
+              <tr>
+                <td colSpan={6} className="py-8 text-center text-zinc-500">
+                  No subscription payment records found.
                 </td>
               </tr>
-            ))}
+            ) : (
+              filtered.map((p) => (
+                <tr key={p.id} className="hover:bg-zinc-800/50 transition">
+                  <td className="py-3 px-2 font-mono text-zinc-400">{p.id}</td>
+                  <td className="py-3 px-2 font-extrabold text-white">{p.user}</td>
+                  <td className="py-3 px-2 font-bold text-amber-400">{p.plan}</td>
+                  <td className="py-3 px-2 font-black text-white">₹{p.amount}</td>
+                  <td className="py-3 px-2 text-zinc-400">{p.date}</td>
+                  <td className="py-3 px-2 text-right">
+                    <span
+                      className={`px-2 py-0.5 rounded text-[10px] font-extrabold uppercase inline-flex items-center gap-1 ${
+                        p.status === 'SUCCESS'
+                          ? 'bg-emerald-950 text-emerald-400 border border-emerald-500/30'
+                          : p.status === 'FAILED'
+                          ? 'bg-red-950 text-red-400 border border-red-500/30'
+                          : 'bg-zinc-800 text-zinc-400'
+                      }`}
+                    >
+                      {p.status === 'SUCCESS' && <CheckCircle2 className="h-3 w-3 text-emerald-400" />}
+                      {p.status === 'FAILED' && <XCircle className="h-3 w-3 text-red-400" />}
+                      {p.status}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

@@ -70,7 +70,7 @@ export default function Header({
             </button>
 
             {/* Admin Switcher */}
-            {(currentUser.role === 'ADMIN' || true) && (
+            {currentUser.role === 'ADMIN' && (
               <button
                 onClick={() => onToggleViewMode(viewMode === 'user' ? 'admin' : 'user')}
                 className={`flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded-lg font-bold border transition ${
