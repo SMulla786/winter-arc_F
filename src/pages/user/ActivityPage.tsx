@@ -4,13 +4,17 @@ import { Footprints, Plus, Flame, Timer, Compass, HeartPulse, CheckCircle2 } fro
 interface ActivityPageProps {
   stepsLogged: number;
   stepsTarget: number;
+  activitiesList?: any[];
   onOpenActivityModal: () => void;
+  onDeleteActivity?: (id: string) => void;
 }
 
 export default function ActivityPage({
   stepsLogged,
   stepsTarget,
+  activitiesList = [],
   onOpenActivityModal,
+  onDeleteActivity,
 }: ActivityPageProps) {
   const pct = Math.min(Math.round((stepsLogged / stepsTarget) * 100), 100);
   const distanceKm = (stepsLogged * 0.00075).toFixed(1);
@@ -96,35 +100,58 @@ export default function ActivityPage({
       <div className="p-5 rounded-xl bg-[#121216] border border-zinc-800 space-y-4">
         <h2 className="text-xs font-black uppercase text-white tracking-wider border-b border-zinc-800 pb-3 flex items-center justify-between">
           <span>LOGGED ACTIVITIES TODAY</span>
-          <span className="text-zinc-500 font-bold">3 Sessions</span>
+          <span className="text-zinc-500 font-bold">{activitiesList.length} Sessions</span>
         </h2>
 
-        <div className="space-y-3">
-          {[
-            { name: 'Brisk Walking', duration: '25 min', calories: '120 kcal', icon: Footprints, color: 'text-emerald-400' },
-            { name: 'Cycling / Cardio', duration: '15 min', calories: '95 kcal', icon: HeartPulse, color: 'text-amber-400' },
-            { name: 'Full Body Workout', duration: '30 min', calories: '210 kcal', icon: Flame, color: 'text-red-400' },
-          ].map((act, idx) => {
-            const Icon = act.icon;
-            return (
-              <div
-                key={idx}
-                className="p-3.5 rounded-xl bg-[#080808] border border-zinc-800 flex items-center justify-between hover:border-zinc-700 transition"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center">
-                    <Icon className={`h-4 w-4 ${act.color}`} />
+        {activitiesList.length > 0 ? (
+          <div className="space-y-3">
+            {activitiesList.map((act, idx) => {
+              const typeStr = (act.activityType || act.name || 'Activity').replace(/_/g, ' ');
+              const isWalking = typeStr.toLowerCase().includes('walk');
+              const isRunning = typeStr.toLowerCase().includes('run');
+              const isCycling = typeStr.toLowerCase().includes('cycl');
+              const Icon = isWalking ? Footprints : isCycling ? HeartPulse : isRunning ? Flame : Timer;
+              const color = isWalking ? 'text-emerald-400' : isCycling ? 'text-amber-400' : 'text-red-400';
+
+              return (
+                <div
+                  key={act.id || idx}
+                  className="p-3.5 rounded-xl bg-[#080808] border border-zinc-800 flex items-center justify-between hover:border-zinc-700 transition"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="h-9 w-9 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+                      <Icon className={`h-4 w-4 ${color}`} />
+                    </div>
+                    <div>
+                      <div className="font-extrabold text-xs text-white capitalize">{typeStr.toLowerCase()}</div>
+                      <div className="text-[11px] text-zinc-400">
+                        {act.durationMinutes || act.duration || 30} min • {act.steps ? `${act.steps} steps` : 'Active'}
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-extrabold text-xs text-white">{act.name}</div>
-                    <div className="text-[11px] text-zinc-400">{act.duration} active duration</div>
+                  <div className="flex items-center gap-3">
+                    <div className="text-right font-black text-xs text-white">
+                      {act.caloriesBurned || act.calories || 120} kcal
+                    </div>
+                    {onDeleteActivity && act.id && (
+                      <button
+                        onClick={() => onDeleteActivity(act.id)}
+                        className="p-1.5 text-zinc-500 hover:text-red-400 hover:bg-red-950/40 rounded-lg transition"
+                        title="Delete activity"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </button>
+                    )}
                   </div>
                 </div>
-                <div className="text-right font-black text-xs text-white">{act.calories}</div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="py-6 text-center text-xs text-zinc-500">
+            No activities logged today yet. Click "Log Activity" above to add your steps or cardio!
+          </div>
+        )}
       </div>
 
       {/* Optional Health Data Integration Banner */}
