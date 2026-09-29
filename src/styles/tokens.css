@@ -1,0 +1,62 @@
+/* Dark Grimoire Fitness Design System Tokens */
+
+:root {
+  /* Color System */
+  --bg-main: #070708;
+  --surface-1: #101014;
+  --surface-2: #15151A;
+  --surface-3: #1A1A22;
+  
+  /* Primary Energy Accent: Crimson */
+  --primary-crimson: #D51F2A;
+  --primary-hover: #EF3340;
+  --primary-glow: rgba(213, 31, 42, 0.35);
+  
+  /* Text & Muted Colors */
+  --text-main: #F5F5F5;
+  --text-secondary: #C4C4CD;
+  --text-muted: #96969F;
+  --border-dark: #28282F;
+  --border-light: #383844;
+  
+  /* Semantic Status Colors */
+  --status-success: #22C55E;
+  --status-warning: #F59E0B;
+  --status-error: #EF4444;
+  --status-info: #3B82F6;
+  
+  /* Fonts */
+  --font-display: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-dark);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-crimson);
+}

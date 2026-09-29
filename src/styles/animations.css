@@ -1,0 +1,46 @@
+/* Dark Grimoire Fitness Subtle Animations */
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(213, 31, 42, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(213, 31, 42, 0.5);
+  }
+}
+
+@keyframes scanLine {
+  0% {
+    top: 0%;
+  }
+  50% {
+    top: 95%;
+  }
+  100% {
+    top: 0%;
+  }
+}
+
+@keyframes crimsonPulse {
+  0% {
+    border-color: rgba(213, 31, 42, 0.4);
+  }
+  50% {
+    border-color: rgba(213, 31, 42, 1);
+  }
+  100% {
+    border-color: rgba(213, 31, 42, 0.4);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2.5s infinite ease-in-out;
+}
+
+.animate-scan-line {
+  animation: scanLine 2s infinite ease-in-out;
+}
+
+.animate-crimson-pulse {
+  animation: crimsonPulse 2s infinite ease-in-out;
+}

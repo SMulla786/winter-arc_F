@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5000/api/v1';
+const API_BASE_URL = 'http://localhost:4900/api/v1';
 
-const api = axios.create({
+const   api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -21,9 +21,14 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor for auth errors
+// Response interceptor for ApiResponse unwrapping & auth errors
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    if (response.data && response.data.data !== undefined && response.data.statusCode !== undefined) {
+      return { ...response, data: response.data.data };
+    }
+    return response;
+  },
   (error) => {
     if (error.response && error.response.status === 401) {
       console.warn('Unauthorized access, clearing tokens.');
@@ -76,6 +81,11 @@ export const createMeal = async (mealData: any) => {
   return res.data;
 };
 
+export const deleteMeal = async (mealId: string) => {
+  const res = await api.delete(`/meals/${mealId}`);
+  return res.data;
+};
+
 // -----------------------------------------------------------------------------
 // EXPENSES API
 // -----------------------------------------------------------------------------
@@ -86,6 +96,11 @@ export const fetchExpenses = async (days: number = 30) => {
 
 export const createExpense = async (expenseData: any) => {
   const res = await api.post('/expenses', expenseData);
+  return res.data;
+};
+
+export const deleteExpense = async (expenseId: string) => {
+  const res = await api.delete(`/expenses/${expenseId}`);
   return res.data;
 };
 
@@ -104,6 +119,21 @@ export const logActivity = async (activityData: any) => {
 
 export const fetchExercises = async (search?: string, category?: string) => {
   const res = await api.get('/activity/exercises', { params: { search, category } });
+  return res.data;
+};
+
+export const logWorkoutSession = async (sessionData: {
+  title: string;
+  durationMinutes: number;
+  caloriesBurned: number;
+  notes?: string;
+}) => {
+  const res = await api.post('/activity/workout-session', sessionData);
+  return res.data;
+};
+
+export const deleteActivity = async (activityId: string) => {
+  const res = await api.delete(`/activity/${activityId}`);
   return res.data;
 };
 
@@ -147,6 +177,16 @@ export const scanReceiptPhoto = async (formData: FormData) => {
   return res.data;
 };
 
+export const parseNLLog = async (textInput: string) => {
+  const res = await api.post('/ai/parse-log', { textInput });
+  return res.data;
+};
+
+export const fetchMealRecommendations = async () => {
+  const res = await api.get('/ai/recommendations/meals');
+  return res.data;
+};
+
 export const chatWithAiCoach = async (message: string) => {
   const res = await api.post('/ai/chat', { message });
   return res.data;
@@ -157,6 +197,16 @@ export const chatWithAiCoach = async (message: string) => {
 // -----------------------------------------------------------------------------
 export const fetchAdminStats = async () => {
   const res = await api.get('/admin/stats');
+  return res.data;
+};
+
+export const fetchAdminUsersList = async () => {
+  const res = await api.get('/admin/users');
+  return res.data;
+};
+
+export const toggleAdminUserStatus = async (userId: string) => {
+  const res = await api.patch(`/admin/users/${userId}/toggle-status`);
   return res.data;
 };
 
