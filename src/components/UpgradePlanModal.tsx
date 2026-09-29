@@ -8,7 +8,12 @@ interface UpgradePlanModalProps {
   onSelectPlan: (planName: string) => void;
 }
 
-export default function UpgradePlanModal({ isOpen, onClose, currentPlanName = 'Free', onSelectPlan }: UpgradePlanModalProps) {
+export default function UpgradePlanModal({
+  isOpen,
+  onClose,
+  currentPlanName = 'Free',
+  onSelectPlan,
+}: UpgradePlanModalProps) {
   if (!isOpen) return null;
 
   const plans = [
@@ -16,7 +21,7 @@ export default function UpgradePlanModal({ isOpen, onClose, currentPlanName = 'F
       name: 'Free',
       price: '₹0',
       period: 'forever',
-      scans: '5 food scans / mo',
+      scans: '10 food scans / mo',
       aiChat: '20 AI messages / mo',
       features: ['Basic calorie tracking', 'Manual activity logging', 'Water intake tracker', 'Weight history graph'],
       popular: false,
@@ -54,20 +59,20 @@ export default function UpgradePlanModal({ isOpen, onClose, currentPlanName = 'F
   ];
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-      <div className="max-w-4xl w-full bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+      <div className="max-w-4xl w-full bg-[#0d0d0f] border border-red-600/40 rounded-2xl shadow-[0_0_50px_rgba(220,38,38,0.2)] overflow-hidden flex flex-col max-h-[90vh]">
         {/* Modal Header */}
-        <div className="p-5 border-b border-slate-800 bg-slate-900/60 flex items-center justify-between">
+        <div className="p-5 border-b border-zinc-800 bg-[#121216] flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-xl bg-amber-500/20 text-amber-400">
+            <div className="p-2 rounded-xl bg-red-950/80 text-red-400 border border-red-600/40">
               <Zap className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-slate-100">Upgrade Your Plan</h2>
-              <p className="text-xs text-slate-400">Unlock higher AI limits & location-aware meal recommendations</p>
+              <h2 className="text-sm font-black uppercase text-white tracking-wider">UPGRADE SUBSCRIPTION PLAN</h2>
+              <p className="text-xs text-zinc-400">Unlock higher Gemini AI vision limits & location-aware meal recommendations</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800">
+          <button onClick={onClose} className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -81,34 +86,34 @@ export default function UpgradePlanModal({ isOpen, onClose, currentPlanName = 'F
                 key={plan.name}
                 className={`rounded-2xl p-5 border flex flex-col justify-between relative transition-all ${
                   plan.popular
-                    ? 'bg-gradient-to-b from-slate-800 to-slate-900 border-emerald-500/50 shadow-xl shadow-emerald-500/10'
-                    : 'bg-slate-900/80 border-slate-800'
+                    ? 'bg-[#121216] border-red-600/60 shadow-xl shadow-red-950/40'
+                    : 'bg-[#080808] border-zinc-800'
                 }`}
               >
                 {plan.popular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-500 text-slate-950 shadow-md">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-[10px] font-black uppercase bg-red-600 text-white shadow-md">
                     Most Popular
                   </span>
                 )}
 
                 <div className="space-y-3">
                   <div>
-                    <h3 className="text-sm font-bold text-slate-100">{plan.name} Plan</h3>
+                    <h3 className="text-sm font-black uppercase text-white">{plan.name} Tier</h3>
                     <div className="mt-2 flex items-baseline gap-1">
-                      <span className="text-3xl font-extrabold text-slate-100">{plan.price}</span>
-                      <span className="text-xs text-slate-400">/{plan.period}</span>
+                      <span className="text-3xl font-black text-white">{plan.price}</span>
+                      <span className="text-xs text-zinc-400">/{plan.period}</span>
                     </div>
                   </div>
 
-                  <div className="p-2.5 rounded-xl bg-slate-950/60 text-xs space-y-1 border border-slate-800">
-                    <div className="text-emerald-400 font-medium">⚡ {plan.scans}</div>
-                    <div className="text-cyan-400 font-medium">💬 {plan.aiChat}</div>
+                  <div className="p-2.5 rounded-xl bg-[#080808] text-xs space-y-1 border border-zinc-800">
+                    <div className="text-red-400 font-bold">⚡ {plan.scans}</div>
+                    <div className="text-amber-400 font-bold">💬 {plan.aiChat}</div>
                   </div>
 
                   <ul className="space-y-2 pt-2">
                     {plan.features.map((feat, idx) => (
-                      <li key={idx} className="flex items-start gap-2 text-xs text-slate-300">
-                        <Check className="h-3.5 w-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                      <li key={idx} className="flex items-start gap-2 text-xs text-zinc-300 font-medium">
+                        <Check className="h-3.5 w-3.5 text-red-400 shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </li>
                     ))}
@@ -119,7 +124,7 @@ export default function UpgradePlanModal({ isOpen, onClose, currentPlanName = 'F
                   {isCurrent ? (
                     <button
                       disabled
-                      className="w-full py-2.5 rounded-xl bg-slate-800 text-slate-400 text-xs font-semibold cursor-default"
+                      className="w-full py-2.5 rounded-xl bg-zinc-800 text-zinc-500 text-xs font-bold cursor-default uppercase"
                     >
                       Current Plan
                     </button>
@@ -129,10 +134,10 @@ export default function UpgradePlanModal({ isOpen, onClose, currentPlanName = 'F
                         onSelectPlan(plan.name);
                         onClose();
                       }}
-                      className={`w-full py-2.5 rounded-xl text-xs font-bold transition shadow-md ${
+                      className={`w-full py-2.5 rounded-xl text-xs font-black uppercase transition shadow-md ${
                         plan.popular
-                          ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 hover:opacity-95'
-                          : 'bg-slate-800 hover:bg-slate-700 text-slate-100'
+                          ? 'bg-gradient-to-r from-red-600 to-red-800 text-white hover:from-red-500'
+                          : 'bg-zinc-800 hover:bg-zinc-700 text-white'
                       }`}
                     >
                       Choose {plan.name}
@@ -145,9 +150,9 @@ export default function UpgradePlanModal({ isOpen, onClose, currentPlanName = 'F
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 border-t border-slate-800 bg-slate-900/60 flex items-center justify-between text-xs text-slate-400">
-          <div className="flex items-center gap-1.5 text-emerald-400">
-            <ShieldCheck className="h-4 w-4" /> Secure Razorpay Payment Gateway Ready
+        <div className="p-4 border-t border-zinc-800 bg-[#121216] flex items-center justify-between text-xs text-zinc-400">
+          <div className="flex items-center gap-1.5 text-emerald-400 font-bold">
+            <ShieldCheck className="h-4 w-4" /> Secure Razorpay Payment Gateway
           </div>
           <span>Cancel anytime</span>
         </div>
