@@ -4,6 +4,8 @@ import { Zap, Sliders, LogOut, ShieldCheck, Flame, User, Sparkles } from 'lucide
 interface HeaderProps {
   currentUser: any;
   currentPlan: string;
+  userLevel?: number;
+  userXp?: number;
   onOpenUpgrade: () => void;
   onOpenProfile: () => void;
   onLogout: () => void;
@@ -14,12 +16,16 @@ interface HeaderProps {
 export default function Header({
   currentUser,
   currentPlan,
+  userLevel = 1,
+  userXp = 0,
   onOpenUpgrade,
   onOpenProfile,
   onLogout,
   viewMode,
   onToggleViewMode,
 }: HeaderProps) {
+  const levelStr = userLevel.toString().padStart(2, '0');
+
   return (
     <header className="sticky top-0 z-40 bg-[#080808]/90 backdrop-blur-md border-b border-white/10 px-4 py-3 flex items-center justify-between">
       {/* Brand & Identity */}
@@ -48,9 +54,9 @@ export default function Header({
             <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-lg bg-zinc-900/80 border border-red-600/30">
               <Sparkles className="h-3.5 w-3.5 text-amber-400" />
               <div className="text-[11px] font-bold text-zinc-200">
-                <span className="text-red-400 font-extrabold">LV. 07</span>
+                <span className="text-red-400 font-extrabold">LV. {levelStr}</span>
                 <span className="mx-1 text-zinc-500">•</span>
-                <span className="text-zinc-400">78 / 100 XP</span>
+                <span className="text-zinc-400">{userXp} / 100 XP</span>
               </div>
             </div>
 

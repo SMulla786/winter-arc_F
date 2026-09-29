@@ -17,6 +17,9 @@ import {
 
 interface HomeDashboardPageProps {
   userName: string;
+  userLevel?: number;
+  userXp?: number;
+  dayStreak?: number;
   totalCaloriesLogged: number;
   calorieTarget: number;
   totalProteinLogged: number;
@@ -39,6 +42,9 @@ interface HomeDashboardPageProps {
 
 export default function HomeDashboardPage({
   userName,
+  userLevel = 1,
+  userXp = 0,
+  dayStreak = 1,
   totalCaloriesLogged,
   calorieTarget,
   totalProteinLogged,
@@ -74,16 +80,21 @@ export default function HomeDashboardPage({
   const sCal = snack.reduce((sum, m) => sum + (m.calories || 0), 0);
   const dCal = dinner.reduce((sum, m) => sum + (m.calories || 0), 0);
 
+  const levelStr = userLevel.toString().padStart(2, '0');
+  const xpPct = Math.min(100, Math.max(5, userXp));
+
   return (
     <div className="space-y-6 max-w-5xl mx-auto pb-12">
       {/* Top Greeting & Status HUD */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-2xl bg-[#0d0d0f] border border-red-600/30 shadow-lg shadow-red-950/20">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-red-500 uppercase tracking-widest">DAY 24 • CONSISTENCY CYCLE</span>
+            <span className="text-xs font-bold text-red-500 uppercase tracking-widest">
+              DAY {dayStreak} • CONSISTENCY CYCLE
+            </span>
           </div>
           <h1 className="text-2xl font-black uppercase text-white tracking-wider mt-0.5">
-            GOOD MORNING, {userName?.toUpperCase() || 'SUHEL'} 👋
+            GOOD MORNING, {userName?.toUpperCase() || 'TRAINER'} 👋
           </h1>
           <p className="text-xs text-zinc-400 mt-1">Your daily energy system is online. Stay consistent today!</p>
         </div>
@@ -91,14 +102,17 @@ export default function HomeDashboardPage({
         {/* Level / XP HUD Card */}
         <div className="flex items-center gap-3 p-3 rounded-xl bg-[#121216] border border-red-600/40">
           <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-red-600 to-amber-600 flex items-center justify-center font-black text-white text-sm shadow-md">
-            07
+            {levelStr}
           </div>
           <div>
-            <div className="text-xs font-black text-white">LEVEL 07</div>
+            <div className="text-xs font-black text-white">LEVEL {levelStr}</div>
             <div className="w-24 bg-zinc-800 h-1.5 rounded-full mt-1 overflow-hidden">
-              <div className="bg-red-500 h-full w-[78%] rounded-full shadow-[0_0_8px_#ef4444]" />
+              <div
+                className="bg-red-500 h-full rounded-full shadow-[0_0_8px_#ef4444]"
+                style={{ width: `${xpPct}%` }}
+              />
             </div>
-            <div className="text-[10px] text-zinc-400 mt-0.5">78 / 100 XP</div>
+            <div className="text-[10px] text-zinc-400 mt-0.5">{userXp} / 100 XP</div>
           </div>
         </div>
       </div>

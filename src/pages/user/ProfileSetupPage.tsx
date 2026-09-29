@@ -15,7 +15,7 @@ export default function ProfileSetupPage({ userProfile, onSave }: ProfileSetupPa
     weightKg: userProfile?.weightKg || '72',
     goal: userProfile?.goal || 'WEIGHT_LOSS',
     dietType: userProfile?.dietType || 'NON_VEGETARIAN',
-    lifestyleType: userProfile?.lifestyleType || 'OFFICE',
+    lifestyleType: userProfile?.lifestyleType || 'OFFICE_WORKER',
     dailyBudget: userProfile?.dailyBudget || '300',
     city: userProfile?.city || 'Mumbai',
     area: userProfile?.area || 'Andheri West',
@@ -42,7 +42,7 @@ export default function ProfileSetupPage({ userProfile, onSave }: ProfileSetupPa
   const estimatedCalories = formData.goal === 'BUILD_MUSCLE' ? 2400 : formData.goal === 'WEIGHT_LOSS' ? 1850 : 2100;
   const estimatedProtein = formData.goal === 'BUILD_MUSCLE' ? Math.round(weight * 2.0) : Math.round(weight * 1.5);
   const estimatedWater = 8; // 8 glasses
-  const estimatedSteps = formData.lifestyleType === 'OFFICE' ? 10000 : 8500;
+  const estimatedSteps = formData.lifestyleType === 'OFFICE_WORKER' ? 10000 : 8500;
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto pb-8">
@@ -131,7 +131,7 @@ export default function ProfileSetupPage({ userProfile, onSave }: ProfileSetupPa
                 { id: 'BUILD_MUSCLE', label: '💪 Build Muscle' },
                 { id: 'MAINTAIN_WEIGHT', label: '🛡 Maintain Weight' },
                 { id: 'IMPROVE_FITNESS', label: '⚡ Improve Fitness' },
-                { id: 'GAIN_WEIGHT', label: '📈 Gain Weight' },
+                { id: 'WEIGHT_GAIN', label: '📈 Gain Weight' },
               ].map((g) => (
                 <button
                   key={g.id}
@@ -201,7 +201,7 @@ export default function ProfileSetupPage({ userProfile, onSave }: ProfileSetupPa
                   onChange={(e) => handleChange('lifestyleType', e.target.value)}
                   className="w-full mt-1 bg-[#080808] border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white focus:border-red-500 focus:outline-none"
                 >
-                  <option value="OFFICE">Office</option>
+                  <option value="OFFICE_WORKER">Office Worker</option>
                   <option value="WORK_FROM_HOME">Work From Home</option>
                   <option value="STUDENT">Student</option>
                   <option value="OTHER">Other Active</option>
