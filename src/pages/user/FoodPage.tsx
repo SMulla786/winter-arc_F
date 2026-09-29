@@ -4,9 +4,10 @@ import { Utensils, Plus, Calendar, Flame, Sparkles, Trash2 } from 'lucide-react'
 interface FoodPageProps {
   mealsList: any[];
   onOpenMealModal: () => void;
+  onDeleteMeal?: (id: string) => void;
 }
 
-export default function FoodPage({ mealsList, onOpenMealModal }: FoodPageProps) {
+export default function FoodPage({ mealsList, onOpenMealModal, onDeleteMeal }: FoodPageProps) {
   const [filter, setFilter] = useState<'today' | 'week' | 'month'>('today');
 
   const totalCalories = mealsList.reduce((sum, m) => sum + (m.calories || 0), 0);
@@ -94,7 +95,7 @@ export default function FoodPage({ mealsList, onOpenMealModal }: FoodPageProps) 
               <div className="space-y-2">
                 {sec.items.map((item, idx) => (
                   <div
-                    key={idx}
+                    key={item.id || idx}
                     className="p-3 rounded-lg bg-[#080808] border border-zinc-800/80 flex items-center justify-between hover:border-red-600/30 transition"
                   >
                     <div>
@@ -103,9 +104,20 @@ export default function FoodPage({ mealsList, onOpenMealModal }: FoodPageProps) 
                         {item.protein ? `${item.protein}g protein` : ''} {item.cost ? `• ₹${item.cost}` : ''}
                       </div>
                     </div>
-                    <div className="text-right">
-                      <div className="font-black text-xs text-red-400">{item.calories} kcal</div>
-                      <div className="text-[10px] text-zinc-500">{item.time || 'Today'}</div>
+                    <div className="flex items-center gap-3">
+                      <div className="text-right">
+                        <div className="font-black text-xs text-red-400">{item.calories} kcal</div>
+                        <div className="text-[10px] text-zinc-500">{item.time || 'Today'}</div>
+                      </div>
+                      {onDeleteMeal && item.id && (
+                        <button
+                          onClick={() => onDeleteMeal(item.id)}
+                          className="p-1.5 text-zinc-500 hover:text-red-400 hover:bg-red-950/40 rounded-lg transition"
+                          title="Delete meal"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}
